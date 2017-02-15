@@ -57,7 +57,7 @@ $(document).on('ready', function(){
        
     // 1.   Prevent the default event execution so the browser doesn't
     //      Example: `event.preventDefault();`
-    $('button.search').on('click', function (event) {
+    $('button.search').on('click', function(event) {
       event.preventDefault();
     // 2.   Get the value of the 'input[name="searchText"]' and use that
     //      as the `tags` value you send to `searchImages()`.
@@ -66,10 +66,9 @@ $(document).on('ready', function(){
      // 3.   Execute the `searchImages()` function to fetch images for the
      //      user.
         searchImages(searchTextInput.value);
-   
-
     });
-    $('#infoModal').on('show.bs.modal', function (event) {
+  
+    $('#infoModal').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget); 
     var title = button.data('title'); 
     var imgSrc = button.data('imgsrc');
