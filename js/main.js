@@ -28,17 +28,25 @@ $(document).on('ready', function(){
         tagmode: "any",
         format: "json"
       }).done(function( data ) {
-        $('images').empty();
-    // 4.   Update the display to add the images to the list with the id
-    //      `#images`.
+     // 4.   Update the display to add the images to the list with the id `#images`. 
+      $('#images').empty();
       $('h1.search-title').first()[0].innerHTML = "Search for: " + tags;
-        $.each(data.items, function (i, item) {
+      $.each(data.items, function (i, item) {
           var newListItem = $("<li>")
           var newTitle = $('<p class="image-title">').html(item.title).appendTo(newListItem);
           var newDate = $('<p class="image-date">').text(item.date_taken).appendTo(newListItem);
           var newDescription = $('<p class="image-description">').html(item.description).appendTo(newListItem);
           var newLink = $('<a>').attr('href', item.link).text('View on Flickr.').appendTo(newListItem);
-            newListItem.appendTo("#images");
+       // Attach an event to the search button (`button.search`) to execute the search when clicked. 
+          var newButton = $("<button class='btn btn-sm btn-primary'>enlarge</button>").attr({
+          'data-title': item.title,
+          'data-toggle': "modal",
+          'data-target': "#infoModal",
+          'data-imgsrc': item.media.m,
+          'data-description': item.description,
+          'type': "button"
+        }).appendTo(newListItem);
+          newListItem.appendTo("#images");
             if (i === 15) {
                return false;
            }
@@ -47,11 +55,9 @@ $(document).on('ready', function(){
     };
           
        
-    // Attach an event to the search button (`button.search`) to execute the
-    // search when clicked.
-    $('button.search').on('click', function (event) {
     // 1.   Prevent the default event execution so the browser doesn't
     //      Example: `event.preventDefault();`
+    $('button.search').on('click', function (event) {
       event.preventDefault();
     // 2.   Get the value of the 'input[name="searchText"]' and use that
     //      as the `tags` value you send to `searchImages()`.
@@ -63,4 +69,17 @@ $(document).on('ready', function(){
    
 
     });
+    $('#infoModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); 
+    var title = button.data('title'); 
+    var imgSrc = button.data('imgsrc');
+    var imageDescription = button.data('description');
+
+    // Update the modal's content. We'll use jQuery here.
+    var modal = $(this);
+    modal.find('.modal-title').html(title);
+    var modalBody = modal.find('.modal-body');
+    modalBody.empty();
+    var modalDescription = $("<p class='image-description'>").html(imageDescription).appendTo(modalBody);
+  });
 });
